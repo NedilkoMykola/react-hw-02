@@ -1,10 +1,10 @@
 
-import { useEffect, useState } from 'react'
 import './App.css'
 import Description from './Description/Description'
 import Options from './Options/Options'
 import FeedBack from './Feedback/FeedBack'
 import Notification from './Notification/Notification'
+import { useLocalStorage } from '../hooks/useLocalStorage'
 
 
 const options = {
@@ -15,31 +15,10 @@ const options = {
 
 function App() {
 
-  const [good, setGood] = useState(() => {
-    const savedGood = localStorage.getItem('good');
-   return savedGood !== null ? JSON.parse(savedGood): 0});
-  const [bad, setBad] = useState(() => {
-    const savedBad = localStorage.getItem('bad');
-   return savedBad !== null ? JSON.parse(savedBad): 0});
-  const [neutral, setNeutral] = useState(() => {
-    const savedNeutral = localStorage.getItem('neutral');
-   return savedNeutral !== null ? JSON.parse(savedNeutral): 0});
+  const [good, setGood] = useLocalStorage('good', 0);
+  const [bad, setBad] = useLocalStorage('bad', 0)
+  const [neutral, setNeutral] = useLocalStorage('neutral', 0)
 
-
-  useEffect(() => {
-    localStorage.setItem('good', good);
-    
-  }, [good])
-
-    useEffect(() => {
-    localStorage.setItem('bad', bad);
-    }, [bad])
-  
-    useEffect(() => {
-  
-    localStorage.setItem('neutral', neutral);
-  }, [neutral])
- 
     const totalFeedback = good + bad + neutral;    
 
 
@@ -59,7 +38,6 @@ function App() {
   }
 }
 
-  
   const resetFeedBack = () => {
     setBad(0);
     setGood(0);
